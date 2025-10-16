@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wedding Invitation - Umasha & Kaveendra</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Floating hearts animation */
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            opacity: 0;
+            animation: floatHeart 8s infinite ease-in;
+        }
+
+        @keyframes floatHeart {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .phone-container {
+            width: 100%;
+            max-width: 400px;
+            height: 700px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+            z-index: 10;
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .bot-avatar {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .bot-info h3 {
+            font-size: 18px;
+            margin-bottom: 3px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .bot-info p {
+            font-size: 12px;
+            opacity: 0.95;
+        }
+
+        .countdown {
+            background: rgba(255, 255, 255, 0.25);
+            padding: 8px 12px;
+            border-radius: 10px;
+            margin-top: 8px;
+            display: flex;
+            gap: 10px;
+            font-size: 11px;
+            backdrop-filter: blur(5px);
+        }
+
+        .countdown-item {
+            text-align: center;
+        }
+
+        .countdown-value {
+            display: block;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .countdown-label {
+            display: block;
+            font-size: 9px;
+            opacity: 0.9;
+        }
+
+        .chat-body {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: linear-gradient(to bottom, #ffecd2 0%, #fcb69f 100%);
+        }
+
+        .message {
+            margin-bottom: 15px;
+            display: flex;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.bot {
+            justify-content: flex-start;
+        }
+
+        .message.user {
+            justify-content: flex-end;
+        }
+
+        .message-content {
+            max-width: 75%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            word-wrap: break-word;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .message.bot .message-content {
+            background: white;
+            color: #333;
+            border-bottom-left-radius: 4px;
+        }
+
+        .message.user .message-content {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .typing-indicator {
+            display: none;
+            padding: 12px 16px;
+            background: white;
+            border-radius: 18px;
+            width: fit-content;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .typing-indicator.show {
+            display: block;
+        }
+
+        .typing-indicator span {
+            height: 8px;
+            width: 8px;
+            background: #f5576c;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+            0%, 60%, 100% {
+                transform: translateY(0);
+            }
+            30% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .option-btn {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 12px rgba(245, 87, 108, 0.3);
+        }
+
+        .option-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(245, 87, 108, 0.4);
+        }
+
+        .option-btn:active {
+            transform: translateY(0);
+        }
+
+        .wedding-details {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 18px;
+            border-radius: 15px;
+            margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(245, 87, 108, 0.3);
+        }
+
+        .wedding-details h4 {
+            margin-bottom: 12px;
+            font-size: 18px;
+            text-align: center;
+            border-bottom: 2px solid rgba(255,255,255,0.3);
+            padding-bottom: 8px;
+        }
+
+        .wedding-details p {
+            margin-bottom: 10px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .wedding-details p strong {
+            display: block;
+            margin-bottom: 3px;
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        .map-btn {
+            display: inline-block;
+            background: white;
+            color: #f5576c;
+            padding: 12px 24px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 12px;
+            transition: transform 0.2s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            text-align: center;
+            display: block;
+        }
+
+        .map-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .heart-emoji {
+            display: inline-block;
+            animation: heartbeat 1.5s infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            10%, 30% { transform: scale(1.2); }
+            20% { transform: scale(0.9); }
+        }
+
+        .couple-names {
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 10px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating hearts -->
+    <div class="heart" style="left: 10%; animation-delay: 0s;">💕</div>
+    <div class="heart" style="left: 20%; animation-delay: 2s;">💖</div>
+    <div class="heart" style="left: 30%; animation-delay: 4s;">💗</div>
+    <div class="heart" style="left: 40%; animation-delay: 1s;">💝</div>
+    <div class="heart" style="left: 50%; animation-delay: 3s;">💘</div>
+    <div class="heart" style="left: 60%; animation-delay: 5s;">💕</div>
+    <div class="heart" style="left: 70%; animation-delay: 2.5s;">💖</div>
+    <div class="heart" style="left: 80%; animation-delay: 4.5s;">💗</div>
+    <div class="heart" style="left: 90%; animation-delay: 1.5s;">💝</div>
+
+    <div class="phone-container">
+        <div class="chat-header">
+            <div class="bot-avatar">💑</div>
+            <div class="bot-info">
+                <h3>💍 HeartNote</h3>
+                <p>Online • Sharing Joy</p>
+                <div class="countdown" id="countdown">
+                    <div class="countdown-item">
+                        <span class="countdown-value" id="days">00</span>
+                        <span class="countdown-label">Days</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span class="countdown-value" id="hours">00</span>
+                        <span class="countdown-label">Hours</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span class="countdown-value" id="minutes">00</span>
+                        <span class="countdown-label">Mins</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span class="countdown-value" id="seconds">00</span>
+                        <span class="countdown-label">Secs</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="chat-body" id="chatBody">
+            <div class="message bot">
+                <div class="message-content">
+                    Hello! <span class="heart-emoji">💖</span>
+                </div>
+            </div>
+            <div class="typing-indicator" id="typingIndicator">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const chatBody = document.getElementById('chatBody');
+        const typingIndicator = document.getElementById('typingIndicator');
+        
+        // Wedding details
+        const weddingData = {
+            bride: "Umasha",
+            groom: "Kaveendra",
+            date: "May 15, 2026",
+            weddingDateTime: new Date("2026-05-15T10:00:00"),
+            time: "10:00 AM",
+            venue: "Grand Hotel Ballroom",
+            address: "123 Wedding Street, City, State",
+            mapLink: "https://maps.app.goo.gl/SFfxRXT5K3d2YhV39"
+        };
+
+        // Countdown Timer
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = weddingData.weddingDateTime - now;
+
+            if (distance < 0) {
+                document.getElementById('countdown').innerHTML = '<div class="countdown-item"><span class="countdown-value">🎉</span><span class="countdown-label">Today!</span></div>';
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('days').textContent = String(days).padStart(2, '0');
+            document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+            document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+        }
+
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+
+        // Get guest name from URL parameter
+        function getGuestName() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('guest') || 'Dear Friend';
+        }
+
+        const guestName = getGuestName();
+
+        function addMessage(text, isBot = true, delay = 1000) {
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    typingIndicator.classList.remove('show');
+                    
+                    const messageDiv = document.createElement('div');
+                    messageDiv.className = `message ${isBot ? 'bot' : 'user'}`;
+                    
+                    const contentDiv = document.createElement('div');
+                    contentDiv.className = 'message-content';
+                    contentDiv.innerHTML = text;
+                    
+                    messageDiv.appendChild(contentDiv);
+                    chatBody.insertBefore(messageDiv, typingIndicator);
+                    chatBody.scrollTop = chatBody.scrollHeight;
+                    
+                    resolve();
+                }, delay);
+            });
+        }
+
+        function showTyping() {
+            typingIndicator.classList.add('show');
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+
+        function addOptions(options) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message bot';
+            
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'message-content';
+            
+            const optionsDiv = document.createElement('div');
+            optionsDiv.className = 'options';
+            
+            options.forEach(option => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.textContent = option.text;
+                btn.onclick = option.action;
+                optionsDiv.appendChild(btn);
+            });
+            
+            contentDiv.appendChild(optionsDiv);
+            messageDiv.appendChild(contentDiv);
+            chatBody.insertBefore(messageDiv, typingIndicator);
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+
+        async function startConversation() {
+            showTyping();
+            await addMessage(`Hello ${guestName}! 🌸`);
+            
+            showTyping();
+            await addMessage("We're thrilled to share some wonderful news with you! ✨");
+            
+            showTyping();
+            await addMessage(`<div class="couple-names">${weddingData.groom} 💕 ${weddingData.bride}</div>`);
+            
+            showTyping();
+            await addMessage("Are getting married! 💍");
+            
+            showTyping();
+            await addMessage("Your presence on our special day would fill our hearts with joy! 🎊");
+            
+            showTyping();
+            await addMessage("What would you like to know about the celebration?");
+            
+            addOptions([
+                { text: "📅 When", action: showDateTime },
+                { text: "📍 Where", action: showLocation },
+                { text: "💝 All Details", action: showAllDetails }
+            ]);
+        }
+
+        async function showDateTime() {
+            await addMessage("📅 When is the big day?", false, 300);
+            showTyping();
+            await addMessage(`<div class="wedding-details">
+                <h4>⏰ Date & Time</h4>
+                <p><strong>📆 Date</strong>${weddingData.date}</p>
+                <p><strong>🕙 Time</strong>${weddingData.time}</p>
+                <p style="text-align: center; margin-top: 10px; font-style: italic;">Save the date! We can't wait to celebrate with you! ✨</p>
+            </div>`);
+            showMainMenu();
+        }
+
+        async function showLocation() {
+            await addMessage("📍 Where will it be?", false, 300);
+            showTyping();
+            await addMessage(`<div class="wedding-details">
+                <h4>📍 Venue Location</h4>
+                <p><strong>🏛️ Venue</strong>${weddingData.venue}</p>
+                <p><strong>📮 Address</strong>${weddingData.address}</p>
+                <a href="${weddingData.mapLink}" target="_blank" class="map-btn">🗺️ Open Google Maps</a>
+            </div>`);
+            showMainMenu();
+        }
+
+        async function showAllDetails() {
+            await addMessage("💝 Tell me everything!", false, 300);
+            showTyping();
+            await addMessage(`<div class="wedding-details">
+                <h4>💒 Wedding Celebration</h4>
+                <div class="couple-names">${weddingData.groom} & ${weddingData.bride}</div>
+                <p><strong>📆 Date</strong>${weddingData.date}</p>
+                <p><strong>🕙 Time</strong>${weddingData.time}</p>
+                <p><strong>🏛️ Venue</strong>${weddingData.venue}</p>
+                <p><strong>📮 Address</strong>${weddingData.address}</p>
+                <a href="${weddingData.mapLink}" target="_blank" class="map-btn">🗺️ Open Google Maps</a>
+            </div>`);
+            
+            showTyping();
+            await addMessage("Your presence is the greatest gift! We look forward to celebrating this special moment with you! 💕✨", true, 1500);
+            
+            showMainMenu();
+        }
+
+        function showMainMenu() {
+            setTimeout(() => {
+                addMessage("Need any other information? 😊");
+                addOptions([
+                    { text: "📅 When", action: showDateTime },
+                    { text: "📍 Where", action: showLocation },
+                    { text: "💝 All Details", action: showAllDetails }
+                ]);
+            }, 1500);
+        }
+
+        setTimeout(startConversation, 1000);
+    </script>
+</body>
+</html>
