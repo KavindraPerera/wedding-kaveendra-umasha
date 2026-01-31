@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kaveendra & Umasha • Wedding Celebration</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['"Playfair Display"', 'serif'],
+            sans: ['Inter', 'sans-serif']
+          },
+          colors: {
+            midnight: '#050306',
+            blush: '#f9d6d9',
+            aurum: '#d6b989',
+            petal: '#f8f0e0'
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    body {
+      font-family: 'Playfair Display', serif;
+      background: radial-gradient(circle at top, rgba(248, 220, 209, 0.2), transparent 55%), #040205;
+      color: #f8f0e0;
+      min-height: 100vh;
+    }
+
+    .aurora {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at 20% 20%, rgba(255, 164, 180, 0.25), transparent 45%),
+                  radial-gradient(circle at 80% 0%, rgba(255, 214, 165, 0.2), transparent 50%),
+                  radial-gradient(circle at 50% 90%, rgba(156, 136, 255, 0.22), transparent 55%);
+      filter: blur(40px);
+      opacity: 0.8;
+      pointer-events: none;
+      animation: drift 18s ease-in-out infinite alternate;
+    }
+
+    @keyframes drift {
+      0% { transform: translateY(0px); }
+      100% { transform: translateY(-25px); }
+    }
+
+    .floating-heart {
+      position: fixed;
+      width: 14px;
+      height: 14px;
+      background: linear-gradient(135deg, #ff8fb1, #ffdada);
+      transform: rotate(45deg);
+      opacity: 0.6;
+      border-radius: 3px;
+      animation: float 12s linear infinite;
+      box-shadow: 0 0 10px rgba(255, 143, 177, 0.4);
+      pointer-events: none;
+    }
+
+    .floating-heart::before,
+    .floating-heart::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: inherit;
+      border-radius: 50%;
+    }
+
+    .floating-heart::before { top: -50%; }
+    .floating-heart::after { left: -50%; }
+
+    @keyframes float {
+      0% { transform: translateY(0) rotate(45deg) scale(0.8); opacity: 0.4; }
+      50% { opacity: 0.9; }
+      100% { transform: translateY(-120px) rotate(45deg) scale(1.1); opacity: 0; }
+    }
+
+    .splash {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at 20% 20%, rgba(255, 182, 193, 0.18), rgba(3,2,5,0.95)),
+                  radial-gradient(circle at 80% 0%, rgba(255, 220, 183, 0.2), transparent 50%),
+                  rgba(3,2,5,0.92);
+      overflow: hidden;
+      z-index: 50;
+      transition: opacity 800ms ease, visibility 800ms ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .splash::before,
+    .splash::after {
+      content: '';
+      position: absolute;
+      width: 140%;
+      height: 140%;
+      top: -10%;
+      left: -10%;
+      background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
+      animation: glowSweep 7s linear infinite;
+    }
+
+    .splash::after {
+      animation-delay: 3s;
+    }
+
+    @keyframes glowSweep {
+      0% { transform: rotate(8deg) translateX(-40%); opacity: 0; }
+      40% { opacity: 0.8; }
+      100% { transform: rotate(8deg) translateX(40%); opacity: 0; }
+    }
+
+    .splash.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .splash-content {
+      position: relative;
+      z-index: 1;
+      padding: 2rem;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.2rem;
+    }
+
+    .splash-eyebrow {
+      letter-spacing: 0.5em;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      font-family: 'Inter', sans-serif;
+      color: rgba(255,255,255,0.65);
+    }
+
+    .splash-title {
+      font-size: clamp(2.2rem, 7vw, 4rem);
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+    }
+
+    .splash-title span {
+      display: inline-block;
+      animation: wordPulse 1.4s ease-in-out infinite;
+    }
+
+    @keyframes wordPulse {
+      0%,100% { transform: translateY(0); opacity: 0.85; }
+      50% { transform: translateY(-8px); opacity: 1; }
+    }
+
+    .splash-note {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.65);
+    }
+
+    .splash button {
+      letter-spacing: 0.4em;
+    }
+
+    .fade-card { opacity: 0; transform: translateY(25px); transition: all 850ms ease; }
+    .fade-card.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body class="relative overflow-x-hidden">
+  <div class="aurora"></div>
+  <span class="floating-heart" style="left: 8%; top: 15%; animation-delay: 0s"></span>
+  <span class="floating-heart" style="left: 22%; top: 65%; animation-delay: 1.5s"></span>
+  <span class="floating-heart" style="left: 35%; top: 10%; animation-delay: 3s"></span>
+  <span class="floating-heart" style="left: 48%; top: 75%; animation-delay: 4.5s"></span>
+  <span class="floating-heart" style="left: 60%; top: 35%; animation-delay: 6s"></span>
+  <span class="floating-heart" style="left: 72%; top: 5%; animation-delay: 7.5s"></span>
+  <span class="floating-heart" style="left: 84%; top: 55%; animation-delay: 9s"></span>
+  <span class="floating-heart" style="left: 92%; top: 25%; animation-delay: 10.5s"></span>
+
+  <div class="splash" id="splash">
+    <div class="splash-content">
+      <p class="splash-eyebrow">Love Arrival</p>
+      <p class="splash-title"><span id="splashWord">Radiance</span></p>
+      <p class="splash-note" id="splashNote">May 15 • Candela Hotel</p>
+      <button id="enter" class="mt-2 inline-flex items-center gap-2 rounded-full border border-white/40 px-8 py-3 text-xs font-semibold tracking-[0.35em] uppercase">Enter Celebration</button>
+    </div>
+  </div>
+
+  <main class="relative z-10 px-5 sm:px-8 py-10 pb-24 lg:py-16">
+    <section class="max-w-5xl mx-auto bg-white/5 backdrop-blur-2xl border border-white/10 rounded-[32px] p-8 sm:p-12 lg:p-16 shadow-2xl">
+      <div class="text-center space-y-6">
+        <p class="text-[0.65rem] font-sans tracking-[0.5em] uppercase text-petal sm:text-xs">Wedding Celebration</p>
+        <div class="flex items-center justify-center">
+          <span class="inline-flex items-center justify-center w-12 h-12 rounded-full border border-white/20 bg-white/5 shadow-lg shadow-aurum/20 sm:w-14 sm:h-14">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52" class="w-8 h-8 text-aurum sm:w-9 sm:h-9">
+              <path fill="currentColor" d="M32 9l2.8-4.2c.3-.6 0-1.3-.7-1.5L29 2.3c-.7-.2-1.3.3-1.3 1L28 9l4 0zm-10 0l-2.8-4.2c-.3-.6 0-1.3.7-1.5L23 2.3c.7-.2 1.3.3 1.3 1L24 9l-2 0zM20 18a12 12 0 1 0 0 24h1a12 12 0 0 0 11-17.1A12 12 0 0 0 28 18h-8zm0 4h1a8 8 0 1 1 0 16h-1a8 8 0 0 1 0-16zm12-4a12 12 0 1 1 0 24h-1.2a15 15 0 1 0 0-12H32a8 8 0 1 0 0-16z"/>
+            </svg>
+          </span>
+        </div>
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl leading-tight">
+          <span class="block sm:inline">Kaveendra</span>
+          <span class="block text-[1.8rem] sm:inline sm:text-inherit">&amp;</span>
+          <span class="block sm:inline">Umasha</span>
+        </h1>
+        <p class="text-[0.65rem] font-sans uppercase tracking-[0.4em] text-neutral-400 sm:text-sm">Dear <span id="guestName" class="text-petal">Guest</span></p>
+        <p class="font-sans text-sm text-neutral-200 leading-relaxed sm:text-base lg:text-lg">
+          Join us at Candela Hotel, Wegolla, Kurunegala, where morning light, jasmine notes, and soft drums set the tone for vows shared with family.
+        </p>
+        <div class="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+          <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Kaveendra%20%26%20Umasha%20Wedding&dates=20260515T042500Z/20260515T063000Z&location=Candela%20Hotel%2C%20Wegolla%2C%20Kurunegala&details=Ceremony%20begins%20at%209%3A55%20AM%20(Sri%20Lanka%20Time)." target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-full bg-aurum px-6 py-3 text-midnight font-semibold tracking-wide">
+            Save the Date
+          </a>
+          <a href="https://maps.app.goo.gl/xUwnQBViRnfcZr1C8" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-full border border-white/30 px-6 py-3 text-sm font-semibold tracking-wide">
+            Venue Map
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="max-w-5xl mx-auto mt-10 grid gap-6 sm:grid-cols-3">
+      <article class="fade-card rounded-3xl bg-white/5 border border-white/10 p-6">
+        <p class="text-xs font-sans tracking-[0.35em] uppercase text-petal">Date</p>
+        <p class="mt-4 text-xl sm:text-2xl">Friday, May 15, 2026</p>
+      </article>
+      <article class="fade-card rounded-3xl bg-white/5 border border-white/10 p-6">
+        <p class="text-xs font-sans tracking-[0.35em] uppercase text-petal">Poruwa Time</p>
+        <p class="mt-4 text-xl sm:text-2xl">9:55 AM SLST</p>
+        <p class="text-[0.65rem] font-sans text-neutral-300 mt-1 sm:text-xs">Arrivals from 9:15 AM</p>
+      </article>
+      <article class="fade-card rounded-3xl bg-white/5 border border-white/10 p-6">
+        <p class="text-xs font-sans tracking-[0.35em] uppercase text-petal">Venue</p>
+        <p class="mt-4 text-xl sm:text-2xl">Candela Hotel</p>
+        <p class="text-[0.65rem] font-sans text-neutral-300 mt-1 sm:text-xs">Wegolla, Kurunegala, Sri Lanka</p>
+      </article>
+    </section>
+
+    <section class="max-w-4xl mx-auto mt-12 text-center fade-card">
+      <p class="text-xs font-sans tracking-[0.4em] uppercase text-petal">Countdown</p>
+      <div class="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-4" id="countdown">
+        <div class="rounded-2xl border border-white/15 bg-black/40 p-4">
+          <p id="days" class="text-3xl sm:text-4xl">00</p>
+          <p class="text-[0.65rem] font-sans uppercase tracking-wide text-neutral-400 sm:text-xs">Days</p>
+        </div>
+        <div class="rounded-2xl border border-white/15 bg-black/40 p-4">
+          <p id="hours" class="text-3xl sm:text-4xl">00</p>
+          <p class="text-[0.65rem] font-sans uppercase tracking-wide text-neutral-400 sm:text-xs">Hours</p>
+        </div>
+        <div class="rounded-2xl border border-white/15 bg-black/40 p-4">
+          <p id="minutes" class="text-3xl sm:text-4xl">00</p>
+          <p class="text-[0.65rem] font-sans uppercase tracking-wide text-neutral-400 sm:text-xs">Minutes</p>
+        </div>
+        <div class="rounded-2xl border border-white/15 bg-black/40 p-4">
+          <p id="seconds" class="text-3xl sm:text-4xl">00</p>
+          <p class="text-[0.65rem] font-sans uppercase tracking-wide text-neutral-400 sm:text-xs">Seconds</p>
+        </div>
+      </div>
+      <p class="mt-6 text-xs font-sans text-neutral-300 sm:text-sm">Sri Lanka Standard Time • May 15, 2026</p>
+    </section>
+
+    <footer class="max-w-4xl mx-auto mt-12 text-center fade-card">
+      <p class="text-xl italic">“Golden vows, eternal light.”</p>
+      <p class="text-sm font-sans text-neutral-400 mt-3">Kaveendra &amp; Umasha</p>
+    </footer>
+  </main>
+
+  <script>
+    const splash = document.getElementById('splash');
+    const enterBtn = document.getElementById('enter');
+    const reveal = () => splash.classList.add('hidden');
+    enterBtn.addEventListener('click', reveal);
+    setTimeout(reveal, 5000);
+
+    const splashWordEl = document.getElementById('splashWord');
+    const splashWords = ['Radiance', 'Forever', 'Heartbeat'];
+    let splashIdx = 0;
+    setInterval(() => {
+      splashIdx = (splashIdx + 1) % splashWords.length;
+      splashWordEl.textContent = splashWords[splashIdx];
+    }, 1300);
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.35 });
+    document.querySelectorAll('.fade-card').forEach(el => observer.observe(el));
+
+    const params = new URLSearchParams(window.location.search);
+    const guestParam = params.get('guest') || params.get('name');
+    const guest = guestParam ? guestParam.trim() : '';
+    if (guest) {
+      document.getElementById('guestName').textContent = guest;
+      const splashNoteEl = document.getElementById('splashNote');
+      if (splashNoteEl) splashNoteEl.textContent = `${guest} • May 15 • Candela Hotel`;
+    }
+
+    const eventDate = new Date('2026-05-15T09:55:00+05:30').getTime();
+    const countdownEl = document.getElementById('countdown');
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const distance = eventDate - now;
+      if (distance <= 0) {
+        countdownEl.innerHTML = '<div class="col-span-4 rounded-2xl border border-white/15 bg-black/40 p-6"><p class="text-2xl">The auspicious hour has arrived ✨</p></div>';
+        return;
+      }
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      document.getElementById('days').textContent = String(days).padStart(2, '0');
+      document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+      document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+      document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+    }
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  </script>
+</body>
+</html>
