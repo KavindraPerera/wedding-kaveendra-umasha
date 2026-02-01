@@ -168,9 +168,36 @@
             color: rgba(255,255,255,0.65);
         }
 
-        .splash button {
-            letter-spacing: 0.4em;
-        }
+    .splash button {
+      letter-spacing: 0.4em;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.4s ease;
+    }
+
+    .splash button::after,
+    .splash button::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 999px;
+      border: 2px solid rgba(255,255,255,0.4);
+      animation: pulseBorder 1.8s ease-in-out infinite;
+    }
+
+    .splash button::before {
+      animation-delay: 0.4s;
+    }
+
+    .splash button:hover {
+      border-color: rgba(255,255,255,0.8);
+    }
+
+    @keyframes pulseBorder {
+      0% { transform: scale(1); opacity: 1; }
+      70% { transform: scale(1.2); opacity: 0; }
+      100% { transform: scale(1.2); opacity: 0; }
+    }
 
     .fade-card { opacity: 0; transform: translateY(25px); transition: all 850ms ease; }
     .fade-card.visible { opacity: 1; transform: translateY(0); }
@@ -192,7 +219,7 @@
         <p class="splash-eyebrow">Love Arrival</p>
         <p class="splash-title"><span id="splashWord">Radiance</span></p>
         <p class="splash-note" id="splashNote">May 15 • Candela Hotel</p>
-        <button id="enter" class="mt-2 inline-flex items-center gap-2 rounded-full border border-white/40 px-8 py-3 text-xs font-semibold tracking-[0.35em] uppercase">Enter Celebration</button>
+        <button id="enter" class="mt-2 inline-flex items-center gap-2 rounded-full border border-white/40 px-8 py-3 text-xs font-semibold tracking-[0.35em] uppercase animate-enter-glow">Enter Celebration</button>
     </div>
 </div>
 
@@ -239,7 +266,6 @@
             <article class="fade-card rounded-3xl bg-white/5 border border-white/10 p-5 text-left">
               <p class="text-xs font-sans tracking-[0.35em] uppercase text-petal">Poruwa Time</p>
               <p class="mt-3 text-xl sm:text-2xl">9:55 AM</p>
-              <p class="text-[0.65rem] font-sans text-neutral-300 mt-1 sm:text-xs">Arrivals from 9:15 AM</p>
             </article>
             <article class="fade-card rounded-3xl bg-white/5 border border-white/10 p-5 text-left sm:col-span-2">
               <p class="text-xs font-sans tracking-[0.35em] uppercase text-petal">Venue</p>
@@ -249,7 +275,7 @@
               </a>
             </article>
           </div>
-          <div class="fade-card rounded-3xl border border-white/10 bg-black/30 p-5 text-center">
+          <div class="fade-card rounded-3xl border border-white/10 bg-black/30 p-6 text-center">
             <p class="text-xs font-sans tracking-[0.4em] uppercase text-petal">Countdown</p>
             <div class="mt-4 grid grid-cols-4 gap-3" id="countdown">
               <div class="rounded-2xl border border-white/15 bg-black/50 py-3">
@@ -269,7 +295,6 @@
                 <p class="text-[0.6rem] font-sans uppercase tracking-wide text-neutral-400 sm:text-xs">Seconds</p>
               </div>
             </div>
-            <p class="mt-4 text-[0.65rem] font-sans text-neutral-300 sm:text-xs">Sri Lanka Standard Time • May 15, 2026</p>
           </div>
           <div class="fade-card rounded-3xl border border-white/10 bg-white/5 p-5 text-center">
             <p class="text-lg italic">“Golden vows, eternal light.”</p>
@@ -280,12 +305,64 @@
     </section>
   </main>
 
+  <audio id="weddingAudio" loop preload="auto" autoplay muted playsinline>
+    <source src="song.mp3" type="audio/mpeg">
+  </audio>
+
   <script>
     const splash = document.getElementById('splash');
     const enterBtn = document.getElementById('enter');
-    const reveal = () => splash.classList.add('hidden');
+    const weddingAudio = document.getElementById('weddingAudio');
+    let audioStarted = false;
+    let audioFaded = false;
+
+    const startAudio = () => {
+      if (audioStarted || !weddingAudio) return;
+      weddingAudio.volume = 0;
+      weddingAudio.muted = true;
+      weddingAudio.play().then(() => {
+        audioStarted = true;
+        fadeInAudio();
+      }).catch(() => {});
+    };
+
+    const fadeInAudio = () => {
+      if (audioFaded || !weddingAudio) return;
+      audioFaded = true;
+      weddingAudio.muted = false;
+      let vol = 0;
+      const target = 0.35;
+      const fadeInterval = setInterval(() => {
+        vol += 0.05;
+        if (vol >= target) {
+          weddingAudio.volume = target;
+          clearInterval(fadeInterval);
+          return;
+        }
+        weddingAudio.volume = vol;
+      }, 200);
+    };
+
+    startAudio();
+    window.addEventListener('load', startAudio);
+    document.addEventListener('click', startAudio);
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) startAudio();
+    });
+    const audioInterval = setInterval(() => {
+      if (audioStarted) {
+        clearInterval(audioInterval);
+        return;
+      }
+      startAudio();
+    }, 3000);
+
+    const reveal = () => {
+      splash.classList.add('hidden');
+      startAudio();
+    };
     enterBtn.addEventListener('click', reveal);
-    setTimeout(reveal, 5000);
+    setTimeout(reveal, 12000);
 
     const splashWordEl = document.getElementById('splashWord');
     const splashWords = ['Radiance', 'Forever', 'Heartbeat'];
@@ -306,31 +383,35 @@
     const guestParam = params.get('guest') || params.get('name');
     const guest = guestParam ? guestParam.trim() : '';
     if (guest) {
-        document.getElementById('guestName').textContent = guest;
-        const splashNoteEl = document.getElementById('splashNote');
-        if (splashNoteEl) splashNoteEl.textContent = `${guest} • May 15 • Candela Hotel`;
+      document.getElementById('guestName').textContent = guest;
+      const splashNoteEl = document.getElementById('splashNote');
+      if (splashNoteEl) splashNoteEl.textContent = `${guest} • May 15 • Candela Hotel`;
     }
 
     const eventDate = new Date('2026-05-15T09:55:00+05:30').getTime();
     const countdownEl = document.getElementById('countdown');
     function updateCountdown() {
-        const now = new Date().getTime();
-        const distance = eventDate - now;
-        if (distance <= 0) {
-            countdownEl.innerHTML = '<div class="col-span-4 rounded-2xl border border-white/15 bg-black/40 p-6"><p class="text-2xl">The auspicious hour has arrived ✨</p></div>';
-            return;
+      const now = new Date().getTime();
+      const distance = eventDate - now;
+      if (distance <= 0) {
+        if (countdownEl) {
+          countdownEl.innerHTML = '<div class="col-span-4 rounded-2xl border border-white/15 bg-black/50 py-6 text-xl">The auspicious hour has arrived ✨</div>';
         }
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-        document.getElementById('days').textContent = String(days).padStart(2, '0');
-        document.getElementById('hours').textContent = String(hours).padStart(2, '0');
-        document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
-        document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+        return;
+      }
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      document.getElementById('days').textContent = String(days).padStart(2, '0');
+      document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+      document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+      document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
     }
     updateCountdown();
     setInterval(updateCountdown, 1000);
+
+
 
   </script>
 </body>
