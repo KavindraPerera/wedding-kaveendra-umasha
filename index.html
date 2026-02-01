@@ -174,24 +174,6 @@
 
     .fade-card { opacity: 0; transform: translateY(25px); transition: all 850ms ease; }
     .fade-card.visible { opacity: 1; transform: translateY(0); }
-
-    .modal {
-      position: fixed;
-      inset: 0;
-      background: rgba(3,2,5,0.85);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 1.5rem;
-      z-index: 60;
-      transition: opacity 300ms ease;
-    }
-
-    .modal.hidden {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-    }
     </style>
 </head>
 <body class="relative overflow-x-hidden">
@@ -240,20 +222,15 @@
           <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Kaveendra%20%26%20Umasha%20Wedding&dates=20260515T042500Z/20260515T063000Z&location=Candela%20Hotel%2C%20Wegolla%2C%20Kurunegala&details=Ceremony%20begins%20at%209%3A55%20AM%20(Sri%20Lanka%20Time)." target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-full bg-aurum px-6 py-3 text-midnight font-semibold tracking-wide">
             Save the Date
           </a>
-          <a href="https://maps.app.goo.gl/xUwnQBViRnfcZr1C8" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-full border border-white/30 px-6 py-3 text-sm font-semibold tracking-wide">
+          <a href="https://maps.app.goo.gl/xUwnQBViRnfcZr1C8" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-full bg-white/80 px-6 py-3 text-midnight font-semibold tracking-wide shadow-lg shadow-aurum/30 hover:bg-white transition">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 21c4-3.5 6-6.5 6-10a6 6 0 1 0-12 0c0 3.5 2 6.5 6 10zm0-8.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+            </svg>
             Venue Map
           </a>
         </div>
       </div>
         <div class="space-y-5">
-          <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 fade-card">
-            <button type="button" class="w-full relative overflow-hidden rounded-3xl border border-white/10 focus:outline-none focus:ring-2 focus:ring-aurum/60 preview-trigger" data-full="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&amp;fit=crop&amp;w=1400&amp;q=80" data-alt="Couple pre-shoot moment">
-              <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&amp;fit=crop&amp;w=800&amp;q=80" alt="Couple pre-shoot moment" class="h-40 w-full object-cover" loading="lazy" decoding="async">
-            </button>
-            <button type="button" class="w-full relative overflow-hidden rounded-3xl border border-white/10 focus:outline-none focus:ring-2 focus:ring-aurum/60 preview-trigger" data-full="https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&amp;fit=crop&amp;w=1400&amp;q=80" data-alt="Garden engagement portrait">
-              <img src="https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&amp;fit=crop&amp;w=800&amp;q=80" alt="Garden engagement portrait" class="h-40 w-full object-cover" loading="lazy" decoding="async">
-            </button>
-          </div>
           <div class="grid gap-4 sm:grid-cols-2">
             <article class="fade-card rounded-3xl bg-white/5 border border-white/10 p-5 text-left">
               <p class="text-xs font-sans tracking-[0.35em] uppercase text-petal">Date</p>
@@ -261,13 +238,15 @@
             </article>
             <article class="fade-card rounded-3xl bg-white/5 border border-white/10 p-5 text-left">
               <p class="text-xs font-sans tracking-[0.35em] uppercase text-petal">Poruwa Time</p>
-              <p class="mt-3 text-xl sm:text-2xl">9:55 AM SLST</p>
+              <p class="mt-3 text-xl sm:text-2xl">9:55 AM</p>
               <p class="text-[0.65rem] font-sans text-neutral-300 mt-1 sm:text-xs">Arrivals from 9:15 AM</p>
             </article>
             <article class="fade-card rounded-3xl bg-white/5 border border-white/10 p-5 text-left sm:col-span-2">
               <p class="text-xs font-sans tracking-[0.35em] uppercase text-petal">Venue</p>
-              <p class="mt-3 text-xl sm:text-2xl">Candela Hotel</p>
-              <p class="text-[0.65rem] font-sans text-neutral-300 mt-1 sm:text-xs">Wegolla, Kurunegala, Sri Lanka</p>
+              <a href="https://maps.app.goo.gl/xUwnQBViRnfcZr1C8" target="_blank" rel="noopener" class="group mt-3 block">
+                <p class="text-xl sm:text-2xl group-hover:text-petal transition-colors">Candela Hotel</p>
+                <p class="text-[0.65rem] font-sans text-neutral-300 mt-1 sm:text-xs group-hover:text-petal/80 transition-colors">Wegolla, Kurunegala, Sri Lanka</p>
+              </a>
             </article>
           </div>
           <div class="fade-card rounded-3xl border border-white/10 bg-black/30 p-5 text-center">
@@ -300,11 +279,6 @@
       </div>
     </section>
   </main>
-
-  <div class="modal hidden" id="photoModal" role="dialog" aria-modal="true" aria-label="Photo preview">
-    <button type="button" id="closeModal" class="absolute top-6 right-6 text-sm font-sans tracking-[0.3em] uppercase text-petal">Close ✕</button>
-    <img id="modalImage" src="" alt="" class="max-h-[80vh] max-w-[90vw] rounded-[24px] border border-white/20 object-contain shadow-2xl">
-  </div>
 
   <script>
     const splash = document.getElementById('splash');
@@ -358,21 +332,6 @@
     updateCountdown();
     setInterval(updateCountdown, 1000);
 
-    const photoModal = document.getElementById('photoModal');
-    const modalImage = document.getElementById('modalImage');
-    const closeModalBtn = document.getElementById('closeModal');
-    const closeModal = () => photoModal.classList.add('hidden');
-    document.querySelectorAll('.preview-trigger').forEach(btn => {
-      btn.addEventListener('click', () => {
-        modalImage.src = btn.dataset.full;
-        modalImage.alt = btn.dataset.alt || 'Wedding preview';
-        photoModal.classList.remove('hidden');
-      });
-    });
-    closeModalBtn.addEventListener('click', closeModal);
-    photoModal.addEventListener('click', (e) => {
-      if (e.target === photoModal) closeModal();
-    });
   </script>
 </body>
 </html>
