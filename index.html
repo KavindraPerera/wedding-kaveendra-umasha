@@ -381,8 +381,35 @@
     document.querySelectorAll('.fade-card').forEach(el => observer.observe(el));
 
     const params = new URLSearchParams(window.location.search);
-    const guestParam = params.get('guest') || params.get('name');
-    const guest = guestParam ? guestParam.trim() : '';
+
+    function getGuestName() {
+      const directGuest = params.get('guest');
+      if (directGuest && directGuest.trim()) return directGuest.trim();
+
+      const directName = params.get('name');
+      if (directName && directName.trim()) {
+        // Recover names when the URL contains an unescaped "&", e.g. ?name=Kanchana & Pamudi
+        const rawQuery = window.location.search.replace(/^\?/, '');
+        const rawNameMatch = rawQuery.match(/(?:^|&)name=([^&]*)(.*)$/);
+        if (rawNameMatch) {
+          const baseName = decodeURIComponent(rawNameMatch[1].replace(/\+/g, ' ')).trim();
+          const trailingParts = rawNameMatch[2]
+            .split('&')
+            .map(part => decodeURIComponent(part.replace(/\+/g, ' ')).trim())
+            .filter(part => part && !part.includes('='));
+
+          if (trailingParts.length) {
+            return [baseName, ...trailingParts].join(' & ').trim();
+          }
+        }
+
+        return directName.trim();
+      }
+
+      return '';
+    }
+
+    const guest = getGuestName();
     if (guest) {
       document.getElementById('guestName').textContent = guest;
       const splashNoteEl = document.getElementById('splashNote');
